@@ -9,9 +9,11 @@ interface WeatherData {
 
 interface WeatherCardProps {
   data: WeatherData | null;
+  isFavorite: boolean;
+  onToggleFavorite: (cityName: string) => void;
 }
 
-export const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
+export const WeatherCard: React.FC<WeatherCardProps> = ({ data, isFavorite, onToggleFavorite }) => {
   if (!data) {
     return (
       <div style={{ padding: '20px', textAlign: 'center', color: '#64748b' }}>
@@ -32,9 +34,24 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ data }) => {
       }}
       aria-label={`Clima em ${data.cityName}`}
     >
-      <h2 style={{ margin: '0 0 10px 0', fontSize: '24px', color: '#1e293b' }}>
-        {data.cityName}
-      </h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <h2 style={{ margin: 0, fontSize: '24px', color: '#1e293b' }}>
+          {data.cityName}
+        </h2>
+        <button
+          onClick={() => onToggleFavorite(data.cityName)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '20px',
+            padding: '5px'
+          }}
+          aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+        >
+          {isFavorite ? '★' : '☆'}
+        </button>
+      </div>
       
       <div style={{ fontSize: '48px', fontWeight: 'bold', margin: '10px 0', color: '#0f172a' }}>
         {Math.round(data.temperature)}°C

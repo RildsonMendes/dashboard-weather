@@ -11,8 +11,8 @@ interface WeatherData {
 
 function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  // Função temporária para simular a busca até integrarmos com a API real
   const handleSearch = (city: string) => {
     setWeatherData({
       cityName: city,
@@ -20,6 +20,11 @@ function App() {
       humidity: 60,
       description: 'parcialmente nublado'
     });
+    setIsFavorite(false);
+  };
+
+  const handleToggleFavorite = (city: string) => {
+    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -27,7 +32,11 @@ function App() {
       <h1>Dashboard de Clima</h1>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
         <SearchBar onSearch={handleSearch} />
-        <WeatherCard data={weatherData} />
+        <WeatherCard 
+          data={weatherData} 
+          isFavorite={isFavorite} 
+          onToggleFavorite={handleToggleFavorite} 
+        />
       </div>
     </main>
   );
